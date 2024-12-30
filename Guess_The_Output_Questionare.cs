@@ -217,7 +217,14 @@ namespace AlgoQuest
 
             }
 
-            string username = "";
+           
+
+            if (holderPoints >= 6)
+            {
+                string soundFilePath2 = @"C:\congrats.wav";
+                ThreadPool.QueueUserWorkItem(myGame.ForEnteringTheNameSounds, soundFilePath2);
+
+              string username = "";
 
 
             //----- adding to HISTORY LEADERBOARD
@@ -255,13 +262,6 @@ namespace AlgoQuest
                 int rowsAffected = myCommand.ExecuteNonQuery();
 
             }
-
-            if (holderPoints >= 6)
-            {
-                string soundFilePath2 = @"C:\congrats.wav";
-                ThreadPool.QueueUserWorkItem(myGame.ForEnteringTheNameSounds, soundFilePath2);
-
-             
 
                 int t = 0;
 
