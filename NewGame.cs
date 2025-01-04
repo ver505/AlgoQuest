@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,7 +9,6 @@ using AlgoQuest;
 using MySql.Data.MySqlClient;
 using static System.Console;
 using static System.Net.Mime.MediaTypeNames;
-
 using System.Data.SqlClient;
 using Google.Protobuf.WellKnownTypes;
 using System.Net.Sockets;
@@ -168,29 +167,22 @@ namespace AlgoQuest
                                 }
                                 else if (selectedDiff == 1)
                                 {
-                                    //isSelected = "HistoryMedium";
+                               
                                     Console.WriteLine("\n\t\t\tYou Need to Passed Easy Mode To Unlocked This Difficulties...");
                                     Console.Beep(500, 300);
                                     continue;
-
-                                    //diff = "Medium";
-                                    //soundFilePath2 = @"C:\selected.wav";
-                                    //ThreadPool.QueueUserWorkItem(ForEnteringTheNameSounds, soundFilePath2);
-                                    //break;
+ 
 
 
                                 }
                                 else if (selectedDiff == 2)
                                 {
 
-                                    //isSelected = "HistoryHard";
+                                   
                                     Console.WriteLine("\n\t\t\tYou Need to Passed Easy & Medium Modes To Unlocked This Difficulties...");
                                     Console.Beep(500, 300);
                                     continue;
-                                    //diff = "Hard";
-                                    //soundFilePath2 = @"C:\selected.wav";
-                                    //ThreadPool.QueueUserWorkItem(ForEnteringTheNameSounds, soundFilePath2);
-                                    //break;
+                                   
 
 
 
