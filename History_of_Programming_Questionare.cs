@@ -9,7 +9,6 @@ using AlgoQuest;
 using MySql.Data.MySqlClient;
 using static System.Console;
 using static System.Net.Mime.MediaTypeNames;
-
 using System.Data.SqlClient;
 using Google.Protobuf.WellKnownTypes;
 using System.Net.Sockets;
