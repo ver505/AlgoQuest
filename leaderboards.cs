@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,7 +9,6 @@ using AlgoQuest;
 using MySql.Data.MySqlClient;
 using static System.Console;
 using static System.Net.Mime.MediaTypeNames;
-
 using System.Data.SqlClient;
 using Google.Protobuf.WellKnownTypes;
 using System.Net.Sockets;
@@ -131,21 +130,21 @@ namespace AlgoQuest
 
                     using (MySqlDataReader reader = myCommand.ExecuteReader())
                     {
-                        // Print leaderboard header
+                        
                         Console.WriteLine("\t\t\t\t---------------------------------------------------------");
                         Console.WriteLine("\t\t\t\t| RANK\t| ID\t|\tUSERNAME\t|     POINTS    |");
                         Console.WriteLine("\t\t\t\t---------------------------------------------------------");
 
                         int rank = 1;
 
-                        // Read data
+                      
                         while (reader.Read() && rank <= 10)
                         {
                             string id = reader["ID"].ToString();
                             string user = reader["NAME"].ToString();
                             int points = Convert.ToInt32(reader["H_OVERALLPOINTS"]);
 
-                            // Display each row with proper alignment
+                           
                             if (user.Length > 8)
                             {
                                 user = user.Length > 8 ? user.Substring(0, 8) : user;
@@ -205,21 +204,21 @@ namespace AlgoQuest
 
                     using (MySqlDataReader reader = myCommand.ExecuteReader())
                     {
-                        // Print leaderboard header
+                  
                         Console.WriteLine("\t\t\t\t---------------------------------------------------------");
                         Console.WriteLine("\t\t\t\t| RANK\t| ID\t|\tUSERNAME\t|     POINTS    |");
                         Console.WriteLine("\t\t\t\t---------------------------------------------------------");
 
                         int rank = 1;
 
-                        // Read data
+                        
                         while (reader.Read() && rank <= 10)
                         {
                             string id = reader["ID"].ToString();
                             string user = reader["NAME"].ToString();
                             int points = Convert.ToInt32(reader["S_OVERALLPOINTS"]);
 
-                            // Display each row with proper alignment
+                            
                             if (user.Length > 8)
                             {
                                 user = user.Length > 8 ? user.Substring(0, 8) : user;
@@ -282,21 +281,21 @@ namespace AlgoQuest
 
                     using (MySqlDataReader reader = myCommand.ExecuteReader())
                     {
-                        // Print leaderboard header
+                       
                         Console.WriteLine("\t\t\t\t---------------------------------------------------------");
                         Console.WriteLine("\t\t\t\t| RANK\t| ID\t|\tUSERNAME\t|     POINTS    |");
                         Console.WriteLine("\t\t\t\t---------------------------------------------------------");
 
                         int rank = 1;
 
-                        // Read data
+                      
                         while (reader.Read() && rank <= 10)
                         {
                             string id = reader["ID"].ToString();
                             string user = reader["NAME"].ToString();
                             int points = Convert.ToInt32(reader["G_OVERALLPOINTS"]);
 
-                            // Display each row with proper alignment
+                           
                             if(user.Length > 8)
                             {
                                 user = user.Length > 8 ? user.Substring(0,8) : user;
