@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -24,6 +24,7 @@ using Org.BouncyCastle.Tls.Crypto.Impl.BC;
 using Mysqlx.Crud;
 using System.Collections;
 using System.Net.NetworkInformation;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AlgoQuest
 {
@@ -70,16 +71,16 @@ namespace AlgoQuest
             int c = 0;
 
 
-            while (counter < 11) // Limit to 6 questions
+            while (counter < 11)  
             {
 
                 try
                 {
-                    // Query to get a random IDQ
+                     
                     string randomIdQuery = "SELECT IDEQHISTORY FROM tbeasyquestion_history ORDER BY RAND() LIMIT 1;";
                     int randomIDQ = 0;
                     bool isUniqueIDFound = false;
-                    HashSet<int> usedIds = new HashSet<int>(); // To track already used IDs
+                    HashSet<int> usedIds = new HashSet<int>();  
 
                     using (MySqlConnection myConn = new MySqlConnection(mycon))
                     {
@@ -93,7 +94,7 @@ namespace AlgoQuest
                             if (!usedIds.Contains(randomIDQ))
                             {
                                 isUniqueIDFound = true;
-                                usedIds.Add(randomIDQ); // Mark this ID as used
+                                usedIds.Add(randomIDQ); 
                             }
                         }
                         else
@@ -103,7 +104,7 @@ namespace AlgoQuest
                         }
                     }
 
-                    // Query to fetch the question with the random IDQ
+               
                     string query = "SELECT IDEQHISTORY, QUESTION, ANSWER, A, B FROM tbeasyquestion_history WHERE IDEQHISTORY = @IDEQHISTORY";
 
                     using (MySqlConnection myConn = new MySqlConnection(mycon))
@@ -115,14 +116,14 @@ namespace AlgoQuest
 
                         using (MySqlDataReader reader = myCommand.ExecuteReader())
                         {
-                            if (reader.Read()) // Check if a row is returned
+                            if (reader.Read()) 
                             {
                                 string question = reader["QUESTION"].ToString();
                                 string choiceA = reader["A"].ToString();
                                 string choiceB = reader["B"].ToString();
-                                string correctAnswer = reader["ANSWER"].ToString(); // "A" or "B"
+                                string correctAnswer = reader["ANSWER"].ToString();  
 
-                                // Display the question and choices
+                               
                                 int selectedOption = 0;
                                 bool answerSelected = false;
 
@@ -135,29 +136,27 @@ namespace AlgoQuest
                                     if (c < 10)
                                     {
                                         ResetColor();
-                                        Console.BackgroundColor = ConsoleColor.DarkRed;
-                                        Console.WriteLine("\n\t\t\t\t\t\t\t\tInstructions: Evaluate the statement based on your existing knowledge and understanding, and determine if it is \n\t\t\t\t\t\t\t\t\t true or false based on the facts you already know.");
+                                        ForegroundColor = ConsoleColor.Red;
+                                        Console.WriteLine("\n\t\t\t\t\t\t\t\tInstructions: Evaluate the statement based on your existing knowledge and understanding, \n\t\t\t\t\t\t\t\t\t and determine if it is true or false based on the facts you already know.");
+                                        ResetColor();
                                         Console.WriteLine($"\n\n\t\t\t\t\t\t\t\t\tQUESTION {counter + 1} - QUESTION 10\n");
                                         Console.WriteLine($"\n\t\t\t\t\t\t\t\t\t{question} \n");
+                                        Console.WriteLine($"\t\t\t\t\t\t\t\t\tCorrect Ans: {correctAnswer}\n");
                                         Console.WriteLine();
                                         Console.WriteLine();
-                                        Console.ForegroundColor = ConsoleColor.White;
 
-                                        // Display choices directly, no "A" or "B" prefix
-                                        string[] choices = { choiceA, choiceB };
+                                      string[] choices = { choiceA, choiceB };
                                         for (int j = 0; j < choices.Length; j++)
                                         {
                                             if (j == selectedOption)
                                             {
-                                                Console.BackgroundColor = ConsoleColor.DarkRed;
-                                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                                Console.ForegroundColor = ConsoleColor.Red;
                                             }
                                             else
                                             {
                                                 Console.ResetColor();
                                             }
 
-                                            Console.BackgroundColor = ConsoleColor.DarkRed;
                                             Console.WriteLine($"\t\t\t\t\t\t\t\t\t\t\t\t{choices[j]}");
                                         }
 
@@ -169,18 +168,19 @@ namespace AlgoQuest
                                         {
                                             answerSelected = true;
 
-                                            // Check the user's selected answer
-                                            if (selectedOption == (correctAnswer == "A" ? 0 : 1))
+                                            if (choices[selectedOption].Equals(correctAnswer, StringComparison.OrdinalIgnoreCase))
                                             {
                                                 easyPoints++;
-                                                Console.ForegroundColor = ConsoleColor.Green;
-                                                Console.WriteLine("\n\t\t\t\t\t\t\t\t\t\tCorrect!.");
+                                                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                                                Console.WriteLine("\n\t\t\t\t\t\t\t\t\t\t\t\tCorrect!.");
                                             }
                                             else
                                             {
-                                                Console.ForegroundColor = ConsoleColor.Black;
-                                                Console.WriteLine($"\n\t\t\t\t\t\t\t\t\t\tIncorrect.");
+                                                Console.ForegroundColor = ConsoleColor.Red;
+                                                Console.WriteLine($"\n\n\t\t\t\t\t\t\t\t\t\t\t\tIncorrect.");
                                             }
+
+
 
                                             Console.ResetColor();
                                             Thread.Sleep(1000);
@@ -222,7 +222,7 @@ namespace AlgoQuest
 
 
                 //----- adding to HISTORY LEADERBOARD
-                // string query = "INSERT INTO historylb (ID, H_EASYPOINTS) VALUES (@id, @heasypoints)";
+            
 
                 string read = "SELECT USER FROM tbinsert WHERE ID = (SELECT MAX(ID) FROM tbinsert)";
                 using (MySqlConnection myConn = new MySqlConnection(mycon))
@@ -479,7 +479,7 @@ namespace AlgoQuest
 
                         using (MySqlDataReader reader = myCommand.ExecuteReader())
                         {
-                            if (reader.Read()) // Check if a row is returned
+                            if (reader.Read())  
                             {
                                 string question = reader["QUESTION"].ToString();
                                 string[] choices = {
@@ -490,7 +490,7 @@ namespace AlgoQuest
                         };
                                 string correctAnswer = reader["ANSWER"].ToString();
 
-                                // Display the question and choices
+                               
                                 int selectedOption = 0;
                                 bool answerSelected = false;
 
@@ -504,34 +504,33 @@ namespace AlgoQuest
                                     if (c < 6)
                                     {
                                         ResetColor();
-                                        Console.BackgroundColor = ConsoleColor.DarkRed;
-
-
+                                        ForegroundColor = ConsoleColor.Red;
                                         Console.WriteLine("\n\t\t\t\t\t\t\t\tInstructions:Read the question thoroughly, ensuring you understand what is being asked. Reflect on your knowledge\n\t\t\t\t\t\t\t      of the topic, considering any relevant concepts or facts that might help answer the question. Carefully evaluate\n\t\t\t\t\t\t\t\t each option and use your understanding to select the most accurate answer. ");
+                                        ResetColor();
                                         Console.WriteLine($"\n\n\t\t\t\t\t\t\t\t\tQUESTION {counter + 1} - QUESTION 6\n");
                                         Console.WriteLine($"\n\n\t\t\t\t\t\t\t\t\t{question + " "}\n");
+                                        Console.WriteLine($"\t\t\t\t\t\t\t\t\tCorrect Ans: {correctAnswer}\n");
                                         Console.WriteLine();
                                         Console.WriteLine();
-                                        Console.ForegroundColor = ConsoleColor.White;
+                                   
 
                                         for (int j = 0; j < choices.Length; j++)
                                         {
                                             if (j == selectedOption)
                                             {
-                                                Console.BackgroundColor = ConsoleColor.DarkRed;
-                                                Console.ForegroundColor = ConsoleColor.Yellow;
+                                   
+                                                Console.ForegroundColor = ConsoleColor.Red;
                                             }
                                             else
                                             {
                                                 Console.ResetColor();
                                             }
-                                            Console.BackgroundColor = ConsoleColor.DarkRed;
+                               
 
                                             Console.WriteLine($"\t\t\t\t\t\t\t\t\t\t\t\t{(char)('A' + j)}. {choices[j]}");
                                         }
 
-                                        // Key input for navigation and selection
-
+                                      
                                         var key = Console.ReadKey(true).Key;
 
 
@@ -541,8 +540,7 @@ namespace AlgoQuest
                                         {
                                             answerSelected = true;
 
-                                            // Check the user's selected answer
-                                            char selectedChoice = (char)('A' + selectedOption); // Convert selected index to A, B, C, D
+                                               char selectedChoice = (char)('A' + selectedOption);  
 
 
 
@@ -552,15 +550,15 @@ namespace AlgoQuest
 
                                                 mediumPoints += 2;
                                                 Console.ForegroundColor = ConsoleColor.DarkCyan;
-                                                Console.WriteLine("\n\t\t\t\t\t\t\t\t\t\tCorrect!.");
+                                                Console.WriteLine("\n\t\t\t\t\t\t\t\t\t\t\t\tCorrect!.");
 
 
 
                                             }
                                             else
                                             {
-                                                Console.ForegroundColor = ConsoleColor.Black;
-                                                Console.WriteLine($"\n\t\t\t\t\t\t\t\t\t\tIncorrect.");
+                                                Console.ForegroundColor = ConsoleColor.Red;
+                                                Console.WriteLine($"\n\t\t\t\t\t\t\t\t\t\t\t\tIncorrect.");
 
 
                                             }
@@ -610,8 +608,7 @@ namespace AlgoQuest
                 ThreadPool.QueueUserWorkItem(myGame.ForEnteringTheNameSounds, soundFilePath2);
                 //----- adding to HISTORY LEADERBOARD
 
-                // string query = "INSERT INTO historylb (H_MEDIUMPOINTS) VALUES (@measypoints)";
-                // string query = "UPDATE historylb SET H_MEDIUMPOINTS = @measypoints WHERE ID = (SELECT MAX(ID) FROM (SELECT ID FROM historylb) AS temp);";
+           
 
                 string update = @"
                 UPDATE historylb 
@@ -623,8 +620,8 @@ namespace AlgoQuest
                 using (MySqlConnection myConn = new MySqlConnection(mycon))
                 {
                     MySqlCommand myCommand = new MySqlCommand(update, myConn);
-                    myCommand.Parameters.AddWithValue("@id", id);             // ID of the row to update
-                    myCommand.Parameters.AddWithValue("@holderPoints", holderPoints); // Value to add to both H_MEDIUMPOINTS and H_OVERALLPOINTS
+                    myCommand.Parameters.AddWithValue("@id", id);           
+                    myCommand.Parameters.AddWithValue("@holderPoints", holderPoints);  
                     myConn.Open();
                     int rowsAffected = myCommand.ExecuteNonQuery();
                 }
@@ -801,8 +798,8 @@ namespace AlgoQuest
 
                 try
                 {
-                    // Query to get a random IDQ
-                    HashSet<int> usedIds = new HashSet<int>(); // To track already used IDs
+           
+                    HashSet<int> usedIds = new HashSet<int>();  
                     string randomIdQuery = "SELECT IDHQHISTORY FROM tbhardquestion_history ORDER BY RAND() LIMIT 1;";
                     int randomIDQ = 0;
                     bool isUniqueIDFound = false;
@@ -820,7 +817,7 @@ namespace AlgoQuest
                             if (!usedIds.Contains(randomIDQ))
                             {
                                 isUniqueIDFound = true;
-                                usedIds.Add(randomIDQ); // Mark this ID as used
+                                usedIds.Add(randomIDQ); 
                             }
                         }
                         else
@@ -843,7 +840,7 @@ namespace AlgoQuest
 
                         using (MySqlDataReader reader = myCommand.ExecuteReader())
                         {
-                            if (reader.Read()) // Check if a row is returned
+                            if (reader.Read())  
                             {
                                 string question = reader["QUESTION"].ToString();
                                 string correctAnswer = reader["ANSWER"].ToString().ToLower();
@@ -854,13 +851,15 @@ namespace AlgoQuest
                                 if (c < 6)
                                 {
                                     ResetColor();
-                                    Console.BackgroundColor = ConsoleColor.DarkRed;
+                                    ForegroundColor = ConsoleColor.Red;
                                     Console.WriteLine("\n\t\t\t\t\t\t\t\tInstructions: Read the question carefully and reflect on your knowledge of the topic. Once you understand \n\t\t\t\t\t\t\t\t\t being asked, provide the correct one-word answer based on your understanding.");
+                                    ResetColor();
                                     Console.WriteLine($"\n\n\t\t\t\t\t\t\t\t\tQUESTION {counter + 1} - QUESTION 6\n");
                                     Console.WriteLine($"\n\n\t\t\t\t\t\t\t\t\t{question + " "} >\n");
 
-                                    Console.ForegroundColor = ConsoleColor.White;
-                                    Write("\t\t\t\t\t\t\t\t\t: " + correctAnswer);
+                                    Write("\t\t\t\t\t\t\t\t\tCorrect Ans: " + correctAnswer);
+                                    ResetColor();
+                                    ForegroundColor = ConsoleColor.Red;
                                     Write("\n\t\t\t\t\t\t\t\t\tAnswer: ");
                                     string ans = Console.ReadLine().ToLower();
 
@@ -872,7 +871,7 @@ namespace AlgoQuest
                                     }
                                     else
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Black;
+                                        Console.ForegroundColor = ConsoleColor.Red;
                                         Console.WriteLine($"\n\t\t\t\t\t\t\t\t\t\tIncorrect!");
                                         Console.ResetColor();
                                     }
@@ -985,9 +984,7 @@ namespace AlgoQuest
                 {
 
 
-
-                    //////////----------------------------------------------------------------------------------------------------------------------------------------------
-
+ 
                     holderPoints = 0;
 
                     easyPoints = 0;
@@ -1113,8 +1110,8 @@ namespace AlgoQuest
 
         public void actualGameHistory()
         {
-            Console.BackgroundColor = ConsoleColor.DarkRed;
-            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Black;
             Console.Clear();
 
             myTitles.actualGameTitle();
@@ -1135,7 +1132,7 @@ namespace AlgoQuest
 
                     using (MySqlDataReader reader = myCommand.ExecuteReader())
                     {
-                        if (reader.Read()) // Check if a row is returned
+                        if (reader.Read())  
                         {
                             id = Convert.ToInt32(reader["ID"]);
                             string username = reader["USER"].ToString();
@@ -1143,7 +1140,7 @@ namespace AlgoQuest
                             string difficulties = reader["DIFFICULTIES"].ToString();
                             points = Convert.ToInt32(reader["POINTS"]);
 
-                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.ForegroundColor = ConsoleColor.White;
                             WriteLine("\n\n\t\t\t| USERNAME: " + username);
                             WriteLine("\t\t\t| USER ID: " + id);
                             WriteLine("\n\n\t\t\t| MODE: " + modes);
@@ -1159,8 +1156,7 @@ namespace AlgoQuest
                         }
                     }
 
-                    // Additional logic for easy/medium/hard points
-
+               
 
                     if (isSelected.Equals("HistoryEasy"))
                     {
@@ -1173,7 +1169,7 @@ namespace AlgoQuest
 
                         if (easyPoints == 0)
                         {
-                            holderPoints = points; // Set holderPoints to points if easyPoints is 0
+                            holderPoints = points;  
                             WriteLine("\n\n\t\t\t| POINTS: " + holderPoints);
                         }
                         else
@@ -1190,10 +1186,7 @@ namespace AlgoQuest
                         {
                             mediumPoints -= 2;
                             Mattempt--;
-                            //}else if (attempt >= 3) {
-
-                            //    mediumPoints -= mediumPoints;
-
+                           
                         }
 
                         if (mediumPoints == 0)
@@ -1222,10 +1215,7 @@ namespace AlgoQuest
                         {
                             hardPoints -= 3;
                             Hattempt--;
-                            //}else if (attempt >= 3) {
-
-                            //    mediumPoints -= mediumPoints;
-
+                           
                         }
 
                         if (hardPoints == 0)
@@ -1247,11 +1237,11 @@ namespace AlgoQuest
                         }
                     }
 
-                    // Now update the points in the database
+                   
                     string updateQuery = "UPDATE tbinsert SET POINTS = @newPoints WHERE ID = (SELECT MAX(ID) FROM (SELECT ID FROM tbinsert) AS temp);";
                     using (MySqlCommand updateCommand = new MySqlCommand(updateQuery, myConn))
                     {
-                        // Use the calculated holderPoints for updating
+                      
                         updateCommand.Parameters.AddWithValue("@newPoints", holderPoints);
                         updateCommand.ExecuteNonQuery();
                     }
