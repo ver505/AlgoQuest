@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -28,8 +28,11 @@ using NAudio.CoreAudioApi;
 
 namespace AlgoQuest
 {
+
+ 
     class game
     {
+
 
         int id = 0;
         string modes = "";
@@ -47,6 +50,8 @@ namespace AlgoQuest
         string mycon = "datasource=localhost;Database=algoquest;username=root;convert zero datetime=true";
 
         [DllImport("user32.dll", SetLastError = true)]
+
+
         public static extern void keybd_event(byte virtualKey, byte scanCode, uint flags, uint extraInfo);
 
         const byte ALT_KEY = 0x12;
@@ -54,31 +59,58 @@ namespace AlgoQuest
         const uint KEY_PRESS = 0x0000;
         const uint KEY_RELEASE = 0x0002;
 
-        //-------------------------------------- CALLING OTHER CLASS -------------------------------------------------
-
-
-
+    
         Title myTitles = new Title();
 
-        
-
-
-
-        //---------------------------------------------------------------------------------------
-
+      
 
         public void Start()
         {
 
             System.Console.OutputEncoding = System.Text.Encoding.Unicode;
-            RunFirstMenu();
+            startWindow();
 
         }
 
 
 
+
+
+
+        string[] startWindowOpt = { "\n\n\n\t\t\t\t\t\t\t PLAYER ", "\t\t\t\t\t\t\t ADMIN " };
+
+
+        public void startWindow()
+        {
+          
+            modes mainModes = new modes(startWindowOpt);
+            int selectedUser = mainModes.forStartWindowSelection();
+
+            string soundFilePath2 = @"C:\selected.wav";
+
+            switch (selectedUser)
+            {
+                case 0:
+                    ThreadPool.QueueUserWorkItem(ForEnteringTheNameSounds, soundFilePath2);
+                    Clear();
+                    RunFirstMenu();
+                    break;
+                case 1:
+                    ThreadPool.QueueUserWorkItem(ForEnteringTheNameSounds, soundFilePath2);
+                    Clear();
+                    Admin myAdmin = new Admin();
+                    myAdmin.adminLogin();
+                    break;
+            }
+        }
+
+
+
+
+
         public void RunFirstMenu()
         {
+
             ForegroundColor = ConsoleColor.Red;
 
 
@@ -95,7 +127,7 @@ namespace AlgoQuest
             Console.WriteLine(title);
             Console.WriteLine("\t\t\t\t\t      PRESS ANY KEY TO REVEAL MENU.");
             ConsoleKeyInfo keyPressed = ReadKey();
-            string[] options = { "\n\n\n\t\t\tNew Game", "\t\t\tLoad Game", "\t\t\tHow to Play", "\t\t\tLeaderboards", "\t\t\tExit" };
+            string[] options = { "\n\n\n\t\t\tNew Game", "\t\t\tLoad Game", "\t\t\tHow to Play", "\t\t\tLeaderboards", "\t\t\tExit Game" };
             Menu mainMenu = new Menu(options);
             int selectedMenu = mainMenu.Run();
 
@@ -127,7 +159,7 @@ namespace AlgoQuest
                     lb.Leaderboards();
                     break;
                 case 4:
-                    SelectedExit();
+                    SelectedExitGame();
                     break;
 
 
@@ -141,13 +173,13 @@ namespace AlgoQuest
         private void SelectedHowToPlay()
         {
             Clear();
-            WriteLine("\t\t\t Game has 3 Modes : [History of Programming]  [Debugging]  [Guess The Output]");
+            WriteLine("\t\t\t Game has 3 Modes : [History of Programming]  [Spot The Error]  [Guess The Output]");
             WriteLine("\n\t\t\t Each Modes have 3 Correspanding Difficulties : [Easy]  [Medium]  [Hard]\n");
-            //WriteLine("\nThere are :\n\t\t 6 Questions in Easy\n\t\t 5 Questions in Medium\n\t\t 4 Questions in Easy\n");
+          
             WriteLine("\t\t\t\t   Required Points To Unlock Next Difficulties \n\n\t\t\t\t   6 points for Easy To Unlock Medium\n\t\t\t\t   8 points for Medium To Unlock Hard\n\t\t\t\t   12 points for Hard to Passed The Selected Mode \n\t\t\t\t   And Be Able To Choose modes You Want Again.\n");
             WriteLine("\t\t\t\t\t\t    << REMEMBER >>  \n\n\t\t\t\t   When You Select The Modes You Want, You Need To Finish it\n\t\t\t\t      After That You Can Choose The Remaining Modes Again\n");
 
-            //////// in game rules erp
+        
             WriteLine("\t\t\t\t\t\t  << INGAME RULES >>\n");
             WriteLine("\t\t\t\t\t\t      - POINTS -");
             WriteLine("\t\t\t\t      In Every Correct Answer You Will Receive :\n" +
@@ -172,7 +204,7 @@ namespace AlgoQuest
 
             string soundFilePath2 = @"C:\loadingSound.wav";
             ThreadPool.QueueUserWorkItem(ForEnteringTheNameSounds, soundFilePath2);
-            //  Console.BackgroundColor = ConsoleColor.White;
+           
             string[] loadingChars = { "/", "-", "\\", "|" };
             int index = 0;
             int loadingLength = 60;
@@ -183,19 +215,19 @@ namespace AlgoQuest
             Console.Clear();
 
 
-            // Center the initial message
+          
 
             Console.ForegroundColor = ConsoleColor.Red;
             int paddingX = (consoleWidth - "   THE GAME WILL START...".Length) / 2;
-            Console.SetCursorPosition(paddingX, consoleHeight / 4); // Vertically center
+            Console.SetCursorPosition(paddingX, consoleHeight / 4);  
             Console.WriteLine("   THE GAME WILL START...");
 
-            // Center the loading bar and percentage
+          
             for (int i = 0; i < loadingLength; i++)
             {
                 Console.ResetColor();
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.SetCursorPosition(0, consoleHeight / 2); // Vertically center
+                Console.SetCursorPosition(0, consoleHeight / 2); 
                 int percentagePadding = (consoleWidth - ("Loading... " + (i + 1) * 100 / loadingLength).Length) / 2;
                 Console.SetCursorPosition(percentagePadding, consoleHeight / 2);
                 int completed = (i + 1) * 100 / loadingLength;
@@ -210,18 +242,17 @@ namespace AlgoQuest
 
                     Console.ResetColor();
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    // Replace the "THE GAME WILL START..." message with "PRESS ANY KEY TO START."
+        
                     string completedMessage = "   PRESS ANY KEY TO START.";
                     int finalMessagePadding = (consoleWidth - completedMessage.Length) / 2;
-                    Console.SetCursorPosition(finalMessagePadding, consoleHeight / 4); // Vertically center
-
+                    Console.SetCursorPosition(finalMessagePadding, consoleHeight / 4);  
 
 
                     Console.WriteLine("   PRESS ANY KEY TO START.");
 
                     while (true)
                     {
-                        var key = Console.ReadKey(intercept: true);  // intercept prevents the key from being displayed
+                        var key = Console.ReadKey(intercept: true);  
                         if (key.Key == ConsoleKey.Enter)
                         {
                             break;
@@ -262,15 +293,12 @@ namespace AlgoQuest
         }
 
 
-        public void SelectedExit()
+        public void SelectedExitGame()
         {
-            Console.Write("\n\t\t\tPress any Key to Exit....");
-            ReadKey(true);
+           
             Environment.Exit(0);
 
-            Console.ReadKey();
-
-
+         
         }
 
 
@@ -549,11 +577,11 @@ namespace AlgoQuest
                         }
                     }
 
-                    // Now update the points in the database
+                   
                     string updateQuery = "UPDATE tbinsert SET POINTS = @newPoints WHERE ID = (SELECT MAX(ID) FROM (SELECT ID FROM tbinsert) AS temp);";
                     using (MySqlCommand updateCommand = new MySqlCommand(updateQuery, myConn))
                     {
-                        // Use the calculated holderPoints for updating
+                      
                         updateCommand.Parameters.AddWithValue("@newPoints", holderPoints);
                         updateCommand.ExecuteNonQuery();
                     }
@@ -573,14 +601,14 @@ namespace AlgoQuest
             {
 
 
-                // Using AudioFileReader to read the sound file and WaveOutEvent for playback
+               
                 using (var audioFile = new AudioFileReader(soundFilePath))
                 using (var outputDevice = new WaveOutEvent())
                 {
-                    outputDevice.Init(audioFile);  // Initialize the output device with the audio file
-                    outputDevice.Play();  // Start playback
+                    outputDevice.Init(audioFile);  
+                    outputDevice.Play();  
 
-                    // Wait until the sound finishes (just to give time for playback)
+                    
                     while (outputDevice.PlaybackState == PlaybackState.Playing)
                     {
                         Thread.Sleep(5);
@@ -601,7 +629,7 @@ namespace AlgoQuest
             string filePath = (string)soundFilePath;
             SoundPlayer soundPlayer = new SoundPlayer(filePath);
 
-            // Loop the sound
+           
             while (true)
             {
                 try
@@ -617,7 +645,7 @@ namespace AlgoQuest
 
         }
 
-       
+      
 
 
 
