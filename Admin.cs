@@ -9,7 +9,6 @@ using AlgoQuest;
 using MySql.Data.MySqlClient;
 using static System.Console;
 using static System.Net.Mime.MediaTypeNames;
-
 using System.Data.SqlClient;
 using Google.Protobuf.WellKnownTypes;
 using System.Net.Sockets;
@@ -63,7 +62,7 @@ namespace AlgoQuest
                         {
                             Console.Clear();
                             game myGame = new game();
-                            //myGame.fullscreen();
+                        
                             admin_Opt();
                             break;
                         }
@@ -98,7 +97,7 @@ namespace AlgoQuest
 
         private void admin_Opt()
         {
-            string[] mainMenu = { "History of Programming", "   Guess the Output   ", "    Spot the Error    " }; // Removed "Questions"
+            string[] mainMenu = { "History of Programming", "   Guess the Output   ", "    Spot the Error    " }; 
             string[] difficultyLevels = { "Easy", "Medium", "Hard" };
             int mainMenuIndex = 0;
             string admin = @"
@@ -117,7 +116,7 @@ namespace AlgoQuest
                 Console.WriteLine("\n\n\t\t       Use the arrow keys to navigate, press Enter to select, or press Backspace to go back.");
                 Console.WriteLine("\t\t\t\t\t          Please Select an Option\n");
 
-                // Display the main menu
+              
                 for (int i = 0; i < mainMenu.Length; i++)
                 {
                     if (i == mainMenuIndex)
@@ -132,7 +131,7 @@ namespace AlgoQuest
                     }
                 }
 
-                // Handle key input
+            
                 ConsoleKey key = Console.ReadKey(true).Key;
                 if (key == ConsoleKey.UpArrow)
                 {
@@ -177,7 +176,7 @@ namespace AlgoQuest
                 Console.WriteLine("");
                 Console.WriteLine("\n\t     Select difficulty level (Use arrow keys to navigate, Enter to select, or Backspace to go back):\n\n\n\n");
 
-                // Display the difficulty levels
+           
                 for (int i = 0; i < difficultyLevels.Length; i++)
                 {
                     if (i == difficultyIndex)
@@ -192,7 +191,7 @@ namespace AlgoQuest
                     }
                 }
 
-                // Handle key input
+              
                 ConsoleKey key = Console.ReadKey(true).Key;
                 if (key == ConsoleKey.UpArrow)
                 {
@@ -208,7 +207,7 @@ namespace AlgoQuest
 
                     Console.WriteLine("You selected: " + menuName + " - " + difficultyLevels[difficultyIndex] + "\n");
 
-                    // Call the corresponding section based on selection
+                  
                     if (menuName == "History of Programming")
                     {
                         HandleHistoryOfProgramming(difficultyLevels[difficultyIndex]);
@@ -228,7 +227,7 @@ namespace AlgoQuest
                 }
                 else if (key == ConsoleKey.Backspace)
                 {
-                    return;  // Go back to the previous menu
+                    return;   
                 }
             }
         }
@@ -285,7 +284,7 @@ namespace AlgoQuest
             Console.WriteLine("\n\n\t\t\t\t     Use double spacing to create a new line (\"  \")\n\n");
             string historydiff = difficulty;
 
-            // Insert your code here for History of Programming
+            
             if (historydiff == "Easy")
             {
 
@@ -457,7 +456,7 @@ namespace AlgoQuest
             }
         }
 
-        // Placeholder function for Guess the Output
+        
         static void HandleGuessTheOutput(string difficulty)
         {
             Console.Clear();
@@ -638,7 +637,7 @@ namespace AlgoQuest
             }
         }
 
-        // Placeholder function for Spot the Error
+      
         static void HandleSpotTheError(string difficulty)
         {
             Console.Clear();
@@ -648,7 +647,7 @@ namespace AlgoQuest
             Console.WriteLine("\n\n\t\t\t\t     Use double spacing to create a new line (\"  \")\n\n");
             string spotdiff = difficulty;
 
-            // Insert your code here for Spot the Error
+           
             if (spotdiff == "Easy")
             {
                 string mycon = "datasource=localhost;Database=algoquest;username=root;convert zero datetime=true";
