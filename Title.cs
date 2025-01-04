@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -9,7 +9,6 @@ using AlgoQuest;
 using MySql.Data.MySqlClient;
 using static System.Console;
 using static System.Net.Mime.MediaTypeNames;
-
 using System.Data.SqlClient;
 using Google.Protobuf.WellKnownTypes;
 using System.Net.Sockets;
@@ -52,6 +51,43 @@ namespace AlgoQuest
 
         }
 
+        public void startWindowTitle()
+        {
+            ForegroundColor = ConsoleColor.White;
+
+            string title = @" 
+
+                         █████╗ ██╗      ██████╗  ██████╗  ██████╗ ██╗   ██╗███████╗███████╗████████╗
+                        ██╔══██╗██║     ██╔════╝ ██╔═══██╗██╔═══██╗██║   ██║██╔════╝██╔════╝╚══██╔══╝
+                        ███████║██║     ██║  ███╗██║   ██║██║   ██║██║   ██║█████╗  ███████╗   ██║   
+                        ██╔══██║██║     ██║   ██║██║   ██║██║▄▄ ██║██║   ██║██╔══╝  ╚════██║   ██║   
+                        ██║  ██║███████╗╚██████╔╝╚██████╔╝╚██████╔╝╚██████╔╝███████╗███████║   ██║   
+                        ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝  ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝   ╚═╝   
+                                                                              ";
+
+            Console.WriteLine(title);
+
+        }
+
+        public void adminTitle()
+        {
+            ForegroundColor = ConsoleColor.Gray;
+
+            string title = @" 
+                                         █████╗ ██████╗ ███╗   ███╗██╗███╗   ██╗
+                                        ██╔══██╗██╔══██╗████╗ ████║██║████╗  ██║
+                                        ███████║██║  ██║██╔████╔██║██║██╔██╗ ██║
+                                        ██╔══██║██║  ██║██║╚██╔╝██║██║██║╚██╗██║
+                                        ██║  ██║██████╔╝██║ ╚═╝ ██║██║██║ ╚████║
+                                        ╚═╝  ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝
+                                        
+
+                                                                              ";
+
+            Console.WriteLine(title);
+
+        }
+
         public void printTitleforGame()
         {
             ForegroundColor = ConsoleColor.Red;
@@ -87,23 +123,22 @@ namespace AlgoQuest
                  ╚═╝  ╚═╝╚══════╝ ╚═════╝  ╚═════╝  ╚══▀▀═╝  ╚═════╝ ╚══════╝╚══════╝   ╚═╝   
                                                                        ";
 
-            // Get console window size (full screen)
+      
             int consoleWidth = Console.WindowWidth;
             int consoleHeight = Console.WindowHeight;
 
-            // Clear the screen first
+          
             Console.Clear();
 
-            // Calculate the padding needed to center the title horizontally and vertically
-            int paddingX = (consoleWidth - title.Split('\n')[0].Length) / 4; // Horizontal padding based on the first line's length
-            int paddingY = consoleHeight / 15; // Vertically centered (1/4th down the screen)
-
-            // Set cursor position and print the title line by line
+     
+            int paddingX = (consoleWidth - title.Split('\n')[0].Length) / 4;  
+            int paddingY = consoleHeight / 15;  
+           
             foreach (string line in title.Split('\n'))
             {
                 Console.SetCursorPosition(paddingX, paddingY);
                 Console.WriteLine(line);
-                paddingY++; // Increment Y to move to the next line
+                paddingY++;  
             }
 
         }
@@ -129,23 +164,23 @@ namespace AlgoQuest
 
             Console.WriteLine(gameover);
 
-            // Get console window size (full screen)
+         
             int consoleWidth = Console.WindowWidth;
             int consoleHeight = Console.WindowHeight;
 
-            // Clear the screen first
+      
             Console.Clear();
 
-            // Calculate the padding needed to center the title horizontally and vertically
-            int paddingX = (consoleWidth - gameover.Split('\n')[0].Length) / 4; // Horizontal padding based on the first line's length
-            int paddingY = consoleHeight / 15; // Vertically centered (1/4th down the screen)
+         
+            int paddingX = (consoleWidth - gameover.Split('\n')[0].Length) / 4;  
+            int paddingY = consoleHeight / 15;  
 
-            // Set cursor position and print the title line by line
+ 
             foreach (string line in gameover.Split('\n'))
             {
                 Console.SetCursorPosition(paddingX, paddingY);
                 Console.WriteLine(line);
-                paddingY++; // Increment Y to move to the next line
+                paddingY++; 
             }
 
 
@@ -173,23 +208,23 @@ namespace AlgoQuest
 
             Console.WriteLine(congrats);
 
-            // Get console window size (full screen)
+ 
             int consoleWidth = Console.WindowWidth;
             int consoleHeight = Console.WindowHeight;
 
-            // Clear the screen first
+           
             Console.Clear();
 
-            // Calculate the padding needed to center the title horizontally and vertically
-            int paddingX = (consoleWidth - congrats.Split('\n')[0].Length) / 6; // Horizontal padding based on the first line's length
-            int paddingY = consoleHeight / 15; // Vertically centered (1/4th down the screen)
+           
+            int paddingX = (consoleWidth - congrats.Split('\n')[0].Length) / 6; 
+            int paddingY = consoleHeight / 15;  
 
-            // Set cursor position and print the title line by line
+        
             foreach (string line in congrats.Split('\n'))
             {
                 Console.SetCursorPosition(paddingX, paddingY);
                 Console.WriteLine(line);
-                paddingY++; // Increment Y to move to the next line
+                paddingY++;  
             }
 
 
@@ -238,20 +273,20 @@ namespace AlgoQuest
 
             Console.Clear();
 
-            // Get console dimensions
+         
             int consoleWidth = Console.WindowWidth;
             int consoleHeight = Console.WindowHeight;
 
-            // Split art into lines
+           
             string[] artLines = art.Split('\n');
             int artWidth = artLines[0].Length;
             int artHeight = artLines.Length;
 
-            // Calculate starting positions for centering
+       
             int startX = (consoleWidth - artWidth) / 6;
             int startY = (consoleHeight - artHeight) / 15;
 
-            // Print each line of art, centered
+          
             Console.SetCursorPosition(0, 0);
             for (int i = 0; i < artLines.Length; i++)
             {
@@ -284,7 +319,7 @@ namespace AlgoQuest
                 {
                     if (reader.Read())
                     {
-                        // Retrieve the values from the columns
+                    
                         username = reader["USER"].ToString();
 
 
@@ -293,7 +328,7 @@ namespace AlgoQuest
 
                         Console.ForegroundColor = ConsoleColor.DarkCyan;
                         Console.BackgroundColor = ConsoleColor.Black;
-                        //sadya yan
+                     
                         string art = $@"
 
                        +##+                              
@@ -345,20 +380,20 @@ namespace AlgoQuest
                         Console.Clear();
 
 
-                        // Get console dimensions
+                      
                         int consoleWidth = Console.WindowWidth;
                         int consoleHeight = Console.WindowHeight;
 
-                        // Split art into lines
+                        
                         string[] artLines = art.Split('\n');
                         int artWidth = artLines[0].Length;
                         int artHeight = artLines.Length;
 
-                        // Calculate starting positions for centering
+                        
                         int startX = (consoleWidth - artWidth) / 1;
                         int startY = (consoleHeight - artHeight) / 15;
 
-                        // Print each line of art, centered
+                        
                         Console.SetCursorPosition(0, 0);
                         for (int i = 0; i < artLines.Length; i++)
                         {
@@ -366,8 +401,7 @@ namespace AlgoQuest
                             Console.WriteLine(artLines[i]);
                         }
 
-                        //Console.ResetColor();
-                        //Console.ReadKey();
+                  
                     }
 
                 }
