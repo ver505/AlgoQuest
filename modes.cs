@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +27,7 @@ namespace AlgoQuest
         private void DisplayModesWithColor()
         {
 
-            // Console.Clear();
+        
             for (int i = 0; i < Modes.Length; i++)
             {
                 string currentOption = Modes[i];
@@ -36,6 +36,34 @@ namespace AlgoQuest
                 {
                     ForegroundColor = ConsoleColor.Black;
                     BackgroundColor = ConsoleColor.Yellow;
+
+
+
+                }
+                else
+                {
+                    ForegroundColor = ConsoleColor.White;
+                    BackgroundColor = ConsoleColor.Black;
+
+                }
+
+                WriteLine(currentOption);
+            }
+            ResetColor();
+        }
+
+        private void DisplayStartWindowSelctWithColor()
+        {
+
+        
+            for (int i = 0; i < Modes.Length; i++)
+            {
+                string currentOption = Modes[i];
+
+                if (i == SelectedModes)
+                {
+                    ForegroundColor = ConsoleColor.Black;
+                    BackgroundColor = ConsoleColor.White;
 
 
 
@@ -100,6 +128,7 @@ namespace AlgoQuest
             return SelectedModes;
         }
 
+        
         public int ModesSelecting2()
         {
             ConsoleKey keyPressed;
@@ -199,6 +228,52 @@ namespace AlgoQuest
         }
 
 
+        public int forStartWindowSelection()
+        {
+            ConsoleKey keyPressed;
+
+
+            do
+            {
+
+                Clear();
+                Title myTitles = new Title();
+                myTitles.startWindowTitle();
+                DisplayStartWindowSelctWithColor();
+
+                ConsoleKeyInfo keyInfo = ReadKey(true);
+                keyPressed = keyInfo.Key;
+
+
+                string soundFilePath1 = @"C:\SelectingSound.wav";
+                ThreadPool.QueueUserWorkItem(SelectingSoundInModes, soundFilePath1);
+
+                if (keyPressed == ConsoleKey.UpArrow)
+                {
+                    SelectedModes--;
+                    if (SelectedModes == -1)
+                    {
+                        SelectedModes = 1;
+
+                    }
+                }
+                else if (keyPressed == ConsoleKey.DownArrow)
+                {
+                    SelectedModes++;
+                    if (SelectedModes == 2)
+                    {
+                        SelectedModes = 0;
+                    }
+                }
+
+
+            } while (keyPressed != ConsoleKey.Enter);
+            string soundFilePath2 = @"C:\selected.wav";
+            ThreadPool.QueueUserWorkItem(SelectingSoundInModes, soundFilePath2);
+
+
+            return SelectedModes;
+        }
 
 
         public void SelectingSoundInModes(object soundFilePathObj)
@@ -209,14 +284,14 @@ namespace AlgoQuest
             {
 
 
-                // Using AudioFileReader to read the sound file and WaveOutEvent for playback
+ 
                 using (var audioFile = new AudioFileReader(soundFilePath))
                 using (var outputDevice = new WaveOutEvent())
                 {
-                    outputDevice.Init(audioFile);  // Initialize the output device with the audio file
-                    outputDevice.Play();  // Start playback
+                    outputDevice.Init(audioFile);   
+                    outputDevice.Play();  
 
-                    // Wait until the sound finishes (just to give time for playback)
+                 
                     while (outputDevice.PlaybackState == PlaybackState.Playing)
                     {
                         Thread.Sleep(5);
